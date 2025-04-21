@@ -1,0 +1,17 @@
+﻿@model eVillageCinemas.ViewModels.OrderViewModel
+
+<input type="hidden" asp-for="Movie.MovieId">
+
+<ul class="flexbox">
+    @foreach (var availableDate in Model.AvailableDateList)
+    {
+        <li onclick="LoadAvailableSeats('@availableDate.AvailableDateId')">
+            <div class="card border-dark shadow w-100 h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">@availableDate.Date.ToString("dd/MM/yyyy HH:mm")</h5>
+                    <p class="card-text text-secondary">@availableDate.Hall.Name</p>
+                </div>
+            </div>
+        </li>
+    }
+</ul>

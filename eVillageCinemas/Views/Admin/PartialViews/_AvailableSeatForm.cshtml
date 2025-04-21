@@ -1,0 +1,14 @@
+﻿@model eVillageCinemas.ViewModels.AdminViewModel
+
+<form id="available-seat-form">
+    @foreach (var availableSeat in Model.AvailableSeats)
+    {
+        <input type="hidden" asp-for="@availableSeat.AvailableSeatId">
+    }
+
+    <div class="mb-3"> 
+        <select asp-for="AvailableDate.AvailableDateId" asp-items="Model.AvailableDateSelectList" class="form-control"></select>
+    </div>
+
+    <button type="button" class="btn btn-primary" onclick="CreateAvailableSeatsPost()">@(Model.AvailableSeats.Any() ? "Create" : "Update")</button>
+</form>

@@ -1,0 +1,115 @@
+﻿<div class="container-fluid">
+    <partial name="_Navbar">
+    
+    <div class="d-flex align-items-center justify-content-center">
+        <button type="button" class="btn btn-success m-2" onclick="CreateOrUpdateSeatGet(0)">Create Seat</button>
+        <button type="button" class="btn btn-danger m-2" onclick="DeleteSingleOrAllSeats(0)">Delete All Seats</button>
+    </div>
+
+    <table id="seats-table" class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Code</th>
+                <th scope="col">Hall</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <partial name="_GeneralModal">
+    <partial name="_ConfirmModal">
+</div>
+
+@section Scripts 
+{
+    <script type="text/javascript">
+        var dt;
+
+        $(document).ready(function () {
+            dt = $("#seats-table").DataTable({
+                ajax: {
+                    url: '@Url.Action("SeatsDatatable", "Admin")',
+                    type: 'POST'
+                },
+                processing: true,
+                serverSide: true,
+                ordering: false
+            });
+
+            $("#seats-table_filter input").change(function () {
+                dt.search($(this).val()).draw();
+            });
+        });
+
+        function CreateOrUpdateSeatGet(seatId) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("CreateOrUpdateSeat", "Admin")?seatId=' + seatId,
+                success: function (response) {
+                    $("#general-modal").modal("show");
+                    $("#general-modal-title").html("Create Seat");
+                    $("#general-modal-body").html(response);
+                    dt.draw();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function CreateOrUpdateSeatPost() {
+            var data = $("#seat-form").serialize();
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("CreateOrUpdateSeat", "Admin")',
+                data: data,
+                success: function (response) {
+                    if (response == "OK") {
+                        $("#general-modal").modal("hide");
+                        $("#general-modal-title").html("");
+                        $("#general-modal-body").html("");
+                        dt.draw();
+                    }
+                    else {
+                        console.log(response);
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function DeleteSingleOrAllSeats(seatId) {
+            $("#confirm-modal").modal("show");
+            $("#confirm-modal-title").html("Confirm");
+            $("#confirm-modal-body").html("Are you sure?");
+            $("#confirm-modal-btn-delete").off("click");
+            $("#confirm-modal-btn-delete").on("click", function () {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("DeleteSingleOrAllSeats", "Admin")?seatId=' + seatId,
+                    success: function (response) {
+                        if (response == "OK") {
+                            $("#confirm-modal").modal("hide");
+                            $("#confirm-modal-title").html("");
+                            $("#confirm-modal-body").html("");
+                            dt.draw();
+                        }
+                        else {
+                            console.log(response);
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            });
+        }
+    </script>
+}

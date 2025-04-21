@@ -1,0 +1,46 @@
+﻿@model eVillageCinemas.ViewModels.PaymentViewModel
+
+@{
+    var firstName = Model.Order?.FirstName;
+    var lastName = Model.Order?.LastName;
+    var movieTitle = Model.Movie?.Title;
+    var movieDate = Model.AvailableDate?.Date.ToString("dd/MM/yyyy HH:mm");
+    var seatsCodes = Model.AvailableSeatsCodes;
+    var qrCode = Model.Order?.QRCode;
+}
+
+<div class="create-order-body">
+    <div class="create-order-container container py-4">
+        <header class="text-center mb-4">
+            <h1 class="display-5 fw-bold">eVillage Cinemas</h1>
+        </header>
+
+        <div class="alert alert-success text-center mb-4" role="alert">
+            <strong>Payment successful!</strong> Your order has been placed.
+        </div>
+
+        <div class="order-ticket-wrap row justify-content-center m-0">
+            <div class="order-ticket order-ticket-left col-md-8 col-lg-8 p-4 bg-light rounded-start border">
+                <h5 class="fw-bold mb-3 text-uppercase">Order Details</h5>
+                <p><strong>First Name:</strong> @firstName</p>
+                <p><strong>Last Name:</strong> @lastName</p>
+                <p><strong>Movie Title:</strong> @movieTitle</p>
+                <p><strong>Movie Date:</strong> @movieDate</p>
+                <p><strong>Seats:</strong> @string.Join(",", seatsCodes)</p>
+            </div>
+
+            <div class="order-ticket order-ticket-right col-md-4 col-lg-4 p-4 bg-light rounded-end border text-center">
+                <h5 class="fw-bold mb-3 text-uppercase">QR Code</h5>
+                <div class="order-qr-code">
+                    <img src="@qrCode" alt="QR Code" class="img-fluid rounded shadow">
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="@Url.Action("Create", "Order")" class="btn btn-dark">
+                Back
+            </a>
+        </div>
+    </div>
+</div>

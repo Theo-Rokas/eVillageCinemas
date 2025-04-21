@@ -1,0 +1,51 @@
+﻿@model eVillageCinemas.ViewModels.OrderViewModel
+
+<input type="hidden" asp-for="AvailableDate.AvailableDateId">
+
+<ul class="showcase">
+    <li>
+        <div class="seat"></div>
+        <small>Free</small>
+    </li>
+    <li>
+        <div class="seat selected"></div>
+        <small>Selected</small>
+    </li>
+    <li>
+        <div class="seat occupied"></div>
+        <small>Occupied</small>
+    </li>
+</ul>
+
+<div class="seats-container">
+    <div class="screen"></div>
+
+    @foreach (var availableSeat in Model.AvailableSeatList)
+    {
+        <div class="seat @(!availableSeat.IsAvailable ? "occupied" : "")" data-seat-id="@availableSeat.AvailableSeatId"></div>
+    }
+
+    <a href="@Url.Action("Create", "Order")" class="btn btn-dark m-2">Back</a>
+
+    <button type="button" class="btn btn-dark m-2" onclick="LoadOrderForm()">Next</button>
+</div>
+
+
+<script>
+    $(".seat:not(.occupied)").click(function () {
+        $(this).toggleClass("selected");
+        var seatId = $(this).data("seat-id");
+        SelectSeats(seatId);
+    });  
+
+    function SelectSeats(seatId) {
+        if (!seatId) return;
+
+        var index = selectedSeats.indexOf(seatId);
+        if (index === -1) {
+            selectedSeats.push(seatId);
+        } else {
+            selectedSeats.splice(index, 1);
+        }
+    }    
+</script>

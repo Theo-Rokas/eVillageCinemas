@@ -1,0 +1,21 @@
+﻿@model eVillageCinemas.ViewModels.AdminViewModel
+
+<form id="seat-form">
+    <input type="hidden" asp-for="Seat.SeatId">
+
+    <div class="mb-3">
+        @if (Model.Seat?.SeatId == 0)
+        {
+            <label asp-for="MultipleNumber" class="form-label"></label>
+            <input asp-for="MultipleNumber" class="form-control">
+        }
+
+        <label asp-for="Seat.Code" class="form-label"></label>
+        <input asp-for="Seat.Code" class="form-control">    
+        
+        <label asp-for="Seat.HallId" class="form-label"></label>
+        <select asp-for="Hall.HallId" asp-items="Model.HallSelectList" class="form-control"></select>
+    </div>
+
+    <button type="button" class="btn btn-primary" onclick="CreateOrUpdateSeatPost()">@(Model.Seat?.SeatId == 0 ? "Create" : "Update")</button>
+</form>

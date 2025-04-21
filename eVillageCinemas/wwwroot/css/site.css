@@ -1,0 +1,435 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap");
+
+/* General Styling */
+* {
+    margin: 0;
+    padding: 0;
+    outline: none;
+    font-family: "Poppins", sans-serif;
+}
+
+:root {
+    --primary: #333;
+    --secondary: #333;
+    --errorColor: red;
+    --stepNumber: 5;
+    --containerWidth: 600px;
+    --bgColor: #333;
+    --inputBorderColor: lightgray;
+}
+
+::selection {
+    color: #fff;
+    background: var(--primary);
+}
+
+/* Multi Step Form Styling */
+.create-order-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: var(--bgColor);
+}
+
+.create-order-container {
+    width: var(--containerWidth);
+    background: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 50px 35px 10px 35px;
+}
+
+.create-order-container header {
+    font-size: 35px;
+    font-weight: 600;
+    margin: 0 0 30px 0;
+}
+
+.create-order-container .create-order-form-outer {
+    width: 100%;
+    overflow: hidden;
+}
+
+.create-order-container .create-order-form-outer form {
+    display: flex;
+    width: calc(100% * var(--stepNumber));
+}
+
+.create-order-form-outer form .create-order-page {
+    width: calc(100% / var(--stepNumber));
+    transition: margin-left 0.3s ease-in-out;
+}
+
+.create-order-form-outer form .create-order-page .create-order-title {
+    text-align: left;
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.create-order-form-outer form .create-order-page .create-order-field {
+    height: 45px;
+    margin: 45px 0;
+    display: flex;
+    position: relative;
+}
+
+.create-order-form-outer form .create-order-page .create-order-field .create-order-label {
+    position: absolute;
+    top: -30px;
+    font-weight: 500;
+}
+
+.create-order-form-outer form .create-order-page .create-order-field input {
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    border: 1px solid var(--inputBorderColor);
+    border-radius: 5px;
+    padding-left: 15px;
+    margin: 0 1px;
+    font-size: 18px;
+    transition: border-color 150ms ease;
+}
+
+.create-order-form-outer form .create-order-page .create-order-field input.invalid-input {
+    border-color: var(--errorColor);
+}
+
+.create-order-form-outer form .create-order-page .create-order-field select {
+    width: 100%;
+    padding-left: 10px;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.create-order-form-outer form .create-order-page .create-order-field button {
+    width: 100%;
+    height: calc(100% + 5px);
+    border: none;
+    background: var(--secondary);
+    margin-top: -20px;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: 0.5s ease;
+}
+
+.create-order-form-outer form .create-order-page .create-order-field button:hover {
+    background: #000;
+}
+
+.create-order-form-outer form .create-order-page .create-order-btns button {
+    margin-top: -20px !important;
+}
+
+.create-order-form-outer form .create-order-page .create-order-btns button.create-order-prev {
+    margin-right: 3px;
+    font-size: 17px;
+}
+
+.create-order-form-outer form .create-order-page .create-order-btns button.create-order-next {
+    margin-left: 3px;
+}
+
+.create-order-container .create-order-progress-bar {
+    display: flex;
+    margin: 40px 0;
+    user-select: none;
+}
+
+.create-order-container .create-order-progress-bar .create-order-step {
+    text-align: center;
+    width: 100%;
+    position: relative;
+}
+
+.create-order-container .create-order-progress-bar .create-order-step p {
+    font-weight: 500;
+    font-size: 18px;
+    color: #000;
+    margin-bottom: 8px;
+}
+
+.create-order-progress-bar .create-order-step .create-order-bullet {
+    height: 25px;
+    width: 25px;
+    border: 2px solid #000;
+    display: inline-block;
+    border-radius: 50%;
+    position: relative;
+    transition: 0.2s;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 25px;
+}
+
+.create-order-progress-bar .create-order-step .create-order-bullet.active {
+    border-color: var(--primary);
+    background: var(--primary);
+}
+
+.create-order-progress-bar .create-order-step .create-order-bullet span {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.create-order-progress-bar .create-order-step .create-order-bullet.active span {
+    display: none;
+}
+
+.create-order-progress-bar .create-order-step .create-order-bullet:before,
+.create-order-progress-bar .create-order-step .create-order-bullet:after {
+    position: absolute;
+    content: "";
+    bottom: 11px;
+    right: -51px;
+    height: 3px;
+    width: 44px;
+    background: #262626;
+}
+
+.create-order-progress-bar .create-order-step .create-order-bullet.active:after {
+    background: var(--primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: animate 0.3s linear forwards;
+}
+
+@keyframes animate {
+    100% {
+        transform: scaleX(1);
+    }
+}
+
+.create-order-progress-bar .create-order-step:last-child .create-order-bullet:before,
+.create-order-progress-bar .create-order-step:last-child .create-order-bullet:after {
+    display: none;
+}
+
+.create-order-progress-bar .create-order-step p.active {
+    color: var(--primary);
+    transition: 0.2s linear;
+}
+
+.create-order-progress-bar .create-order-step .create-order-check {
+    position: absolute;
+    left: 50%;
+    top: 70%;
+    font-size: 15px;
+    transform: translate(-50%, -50%);
+    display: none;
+}
+
+.create-order-progress-bar .create-order-step .create-order-check.active {
+    display: block;
+    color: #fff;
+}
+
+@media screen and (max-width: 660px) {
+    :root {
+        --containerWidth: 400px;
+    }
+
+    .create-order-progress-bar .create-order-step p {
+        display: none;
+    }
+
+    .create-order-progress-bar .create-order-step .create-order-bullet::after,
+    .create-order-progress-bar .create-order-step .create-order-bullet::before {
+        display: none;
+    }
+
+    .create-order-progress-bar .create-order-step .create-order-bullet {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .create-order-progress-bar .create-order-step .create-order-check {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        font-size: 15px;
+        transform: translate(-50%, -50%);
+        display: none;
+    }
+
+    .create-order-step {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 490px) {
+    :root {
+        --containerWidth: 100%;
+    }
+
+    .create-order-container {
+        box-sizing: border-box;
+        border-radius: 0;
+    }
+}
+
+/* Sliding Pages Styling */
+ul.flexbox {
+    display: flex;
+    overflow: auto;
+    height: 174px;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.flexbox li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 160px;
+    height: 160px;
+    flex-shrink: 0;
+}
+
+.flexbox {
+    margin: 0 auto;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul:last-child {
+    margin-right: 0;
+}
+
+ul li {
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    font-size: 1.2em;
+    font-weight: 700;
+    margin: 0 7px 0 0;
+}
+
+.flexbox::-webkit-scrollbar-thumb {
+    background: var(--primary);
+}
+
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+
+::-webkit-scrollbar:hover {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track, ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Seats Selection Styling */
+#available-seats-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.showcase {
+    border-radius: 7px;
+    display: flex;
+    list-style: none;
+    font-weight: 500;
+}
+
+.showcase li {
+    margin: 0 10px;
+}
+
+.showcase li small {
+    color: var(--primary);
+    margin-left: 3px;
+}
+
+.seat {
+    height: 13px;
+    width: 13px;
+    border: 1px solid var(--primary);
+    display: inline-block;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.seat.selected {
+    background-color: var(--bgColor);
+    border: 1px solid var(--primary);
+}
+
+.seat.occupied {
+    background-color: red;
+    border: 1px solid red;
+}
+
+.seats-container {
+    width: 200px;
+    perspective: 1000px;
+}
+
+.seats-container .screen {
+    width: 100%;
+    height: 90px;
+    border: 1px solid var(--primary);
+    transform: rotateX(-45deg);
+    -webkit-box-shadow: 0px 0px 7px 0px rgba(255, 255, 255, 1);
+    -moz-box-shadow: 0px 0px 7px 0px rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 7px 0px rgba(255, 255, 255, 1);
+    margin: 10px 0;
+}
+
+.seats-container .seat {
+    margin: 1px;
+}
+
+.seats-container .seat:not(.occupied):hover {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+/* Order Ticket Styling */
+.order-ticket-wrap {
+    color: #000;
+}
+
+.order-ticket {
+    float: left;
+    padding: 1em;
+}
+
+.order-ticket-left {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    width: 16em;
+}
+
+.order-ticket-right {
+    width: 8em;
+    border-left: 0.18em dashed #000;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}

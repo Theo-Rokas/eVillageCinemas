@@ -1,0 +1,38 @@
+﻿@model eVillageCinemas.ViewModels.AdminViewModel
+
+<form id="available-date-form">
+    <input type="hidden" asp-for="AvailableDate.AvailableDateId">
+
+    <div class="mb-3">
+        @if (Model.AvailableDate?.AvailableDateId == 0)
+        {
+            <label asp-for="MultipleNumber" class="form-label"></label>
+            <input asp-for="MultipleNumber" class="form-control">
+        }
+
+        <label asp-for="AvailableDate.Date" class="form-label"></label>
+        <input asp-for="AvailableDate.Date" class="form-control">   
+        
+        <label asp-for="AvailableDate.MovieId" class="form-label"></label>
+        <select asp-for="Movie.MovieId" asp-items="Model.MovieSelectList" class="form-control"></select>
+        
+        <label asp-for="AvailableDate.HallId" class="form-label"></label>
+        <select asp-for="Hall.HallId" asp-items="Model.HallSelectList" class="form-control"></select>
+    </div>
+
+    <button type="button" class="btn btn-primary" onclick="CreateOrUpdateAvailableDatePost()">@(Model.AvailableDate?.AvailableDateId == 0 ? "Create" : "Update")</button>
+</form>
+
+<script> 
+    $(document).ready(function () {
+        @{ var defaultDate = Model.AvailableDate?.AvailableDateId == 0 ? DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm") : Model.AvailableDate.Date.ToString("dd/MM/yyyy HH:mm"); }
+
+        flatpickr("#AvailableDate_Date", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            defaultDate: '@defaultDate',
+        });
+
+
+    });
+</script>

@@ -1,0 +1,18 @@
+﻿@model eVillageCinemas.ViewModels.AdminViewModel
+
+<form id="hall-form">
+    <input type="hidden" asp-for="Hall.HallId">
+
+    <div class="mb-3">
+        @if (Model.Hall?.HallId == 0)
+        {
+            <label asp-for="MultipleNumber" class="form-label"></label>
+            <input asp-for="MultipleNumber" class="form-control">
+        }
+
+        <label asp-for="Hall.Name" class="form-label"></label>
+        <input asp-for="Hall.Name" class="form-control">        
+    </div>
+
+    <button type="button" class="btn btn-primary" onclick="CreateOrUpdateHallPost()">@(Model.Hall?.HallId == 0 ? "Create" : "Update")</button>
+</form>

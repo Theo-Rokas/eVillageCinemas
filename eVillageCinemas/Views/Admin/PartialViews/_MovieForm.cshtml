@@ -1,0 +1,39 @@
+﻿@model eVillageCinemas.ViewModels.AdminViewModel
+
+<form id="movie-form" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Movie.MovieId">
+
+    <div class="mb-3">
+        @if (Model.Movie?.MovieId == 0)
+        {
+            <label asp-for="MultipleNumber" class="form-label"></label>
+            <input asp-for="MultipleNumber" class="form-control">
+        }
+
+        <label asp-for="Movie.Title" class="form-label"></label>
+        <input asp-for="Movie.Title" class="form-control">     
+        
+        <label asp-for="Movie.Type" class="form-label"></label>
+        <input asp-for="Movie.Type" class="form-control">
+
+        <label asp-for="Movie.Price" class="form-label"></label>
+        <input asp-for="Movie.Price" class="form-control">
+
+        <label asp-for="Movie.Duration" class="form-label"></label>
+        <input asp-for="Movie.Duration" class="form-control">
+
+        <label asp-for="Movie.Description" class="form-label"></label>
+        <input asp-for="Movie.Description" class="form-control">
+
+        <label asp-for="Movie.Actors" class="form-label"></label>
+        <input asp-for="Movie.Actors" class="form-control">
+
+        <label asp-for="File" class="form-label"></label>
+        <input type="file" asp-for="File" class="form-control">
+
+        <label asp-for="Movie.CinemaId" class="form-label"></label>
+        <select asp-for="Cinema.CinemaId" asp-items="Model.CinemaSelectList" class="form-control"></select>
+    </div>
+
+    <button type="button" class="btn btn-primary" onclick="CreateOrUpdateMoviePost()">@(Model.Movie?.MovieId == 0 ? "Create" : "Update")</button>
+</form>

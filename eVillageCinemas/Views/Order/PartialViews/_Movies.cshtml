@@ -1,0 +1,19 @@
+﻿@model eVillageCinemas.ViewModels.OrderViewModel
+
+<input type="hidden" asp-for="Cinema.CinemaId">
+
+<ul class="flexbox">
+    @foreach (var movie in Model.MovieList)
+    {
+        <li onclick="LoadAvailableDates('@movie.MovieId')">
+            <div class="card bg-dark shadow w-100 h-100 text-white">
+                <img src="@movie.Image" class="card-img w-100 h-100" alt="@movie.Title" style="object-fit: cover;">
+                <div class="card-img-overlay d-flex flex-column justify-content-end">
+                    <h5 class="card-title fw-bold">@movie.Title</h5>
+                    <p class="card-text"><small>@movie.Duration min</small></p>
+                    <p class="card-text"><small>@movie.Price €</small></p>
+                </div>
+            </div>
+        </li>
+    }
+</ul>

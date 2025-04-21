@@ -1,0 +1,14 @@
+﻿@model eVillageCinemas.ViewModels.OrderViewModel
+
+<ul class="flexbox">
+    @foreach (var cinema in Model.CinemaList)
+    {
+        <li onclick="LoadMovies('@cinema.CinemaId')">
+            <div class="card border-dark shadow w-100 h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold">@cinema.Name</h5>
+                </div>
+            </div>
+        </li>
+    }
+</ul>

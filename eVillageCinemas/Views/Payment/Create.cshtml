@@ -1,0 +1,27 @@
+﻿@model eVillageCinemas.Models.Payment
+
+<form id="payment-form" accept-charset="UTF-8" action="https://alphaecommerce-test.cardlink.gr/vpos/shophandlermpi" method="POST" name="test">
+    <input name="version" type="hidden" value="@Model.Version" />
+    <input name="mid" type="hidden" value="@Model.Mid" />
+    <input name="orderid" type="hidden" value="@Model.OrderId" />
+    <input name="orderDesc" type="hidden" value="@Model.OrderDesc" />
+    <input name="orderAmount" type="hidden" value="@Model.OrderAmount" />
+    <input name="currency" type="hidden" value="@Model.Currency" />
+    <input name="payerEmail" type="hidden" value="@Model.PayerEmail" />
+    <input name="billCountry" type="hidden" value="@Model.BillCountry" />
+    <input name="billZip" type="hidden" value="@Model.BillZip" />
+    <input name="billCity" type="hidden" value="@Model.BillCity" />
+    <input name="billAddress" type="hidden" value="@Model.BillAddress" />
+    <input name="confirmUrl" type="hidden" value="@Model.ConfirmUrl" />
+    <input name="cancelUrl" type="hidden" value="@Model.CancelUrl" />
+    <input name="digest" type="hidden" value="@Model.Digest" />
+</form>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#payment-form").submit();
+        });
+    </script>
+}

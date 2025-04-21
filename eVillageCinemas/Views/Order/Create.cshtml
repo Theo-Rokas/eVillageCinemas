@@ -1,0 +1,219 @@
+﻿@model eVillageCinemas.ViewModels.OrderViewModel
+
+@section Styles 
+{
+    <style type="text/css">
+    </style>
+}
+
+<div class="create-order-body">
+    <div class="create-order-container">
+        <header>eVillage Cinemas</header>
+        <div class="create-order-progress-bar">
+            <div class="create-order-step">
+                <p>Cinemas</p>
+                <div class="create-order-bullet"><span>1</span></div>
+                <div class="create-order-check"><span>1</span></div>
+            </div>
+            <div class="create-order-step">
+                <p>Movies</p>
+                <div class="create-order-bullet"><span>2</span></div>
+                <div class="create-order-check"><span>2</span></div>
+            </div>
+            <div class="create-order-step">
+                <p>Dates</p>
+                <div class="create-order-bullet"><span>3</span></div>
+                <div class="create-order-check"><span>3</span></div>
+            </div>
+            <div class="create-order-step">
+                <p>Seats</p>
+                <div class="create-order-bullet"><span>4</span></div>
+                <div class="create-order-check"><span>4</span></div>
+            </div>
+            <div class="create-order-step">
+                <p>Order</p>
+                <div class="create-order-bullet"><span>5</span></div>
+                <div class="create-order-check"><span>5</span></div>
+            </div>
+        </div>
+        <div class="create-order-form-outer">
+            <form id="order-form">
+                <div class="create-order-page create-order-slide-page">
+                    <div class="create-order-title text-center">Cinemas</div>
+                    <div id="cinemas-container" class="p-3 border rounded bg-light shadow-sm">
+                        <partial name="~/Views/Order/PartialViews/_Cinemas.cshtml" model="@Model">
+                    </div>
+                </div>
+
+                <div class="create-order-page">
+                    <div class="create-order-title text-center">Movies</div>
+                    <div id="movies-container" class="p-3 border rounded bg-light shadow-sm" style="display: none">
+                    </div>
+                </div>
+
+                <div class="create-order-page">
+                    <div class="create-order-title text-center">Dates</div>
+                    <div id="available-dates-container" class="p-3 border rounded bg-light shadow-sm" style="display: none">
+                    </div>
+                </div>
+
+                <div class="create-order-page">
+                    <div class="create-order-title text-center">Seats</div>
+                    <div id="available-seats-container" class="p-3 border rounded bg-light shadow-sm" style="display: none">
+                    </div>
+                </div>
+
+                <div class="create-order-page">
+                    <div class="create-order-title text-center">Order</div>
+                    <div id="order-form-container" class="p-3 border rounded bg-light shadow-sm" style="display: none">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <partial name="_ErrorModal">
+</div>
+
+
+@section Scripts 
+{
+    <script type="text/javascript">
+        let current = 1;
+
+        function GoToNextPage() {
+            const $slidePage = $(".create-order-slide-page");
+            const $progressText = $(".create-order-step p");
+            const $progressCheck = $(".create-order-step .create-order-check");
+            const $bullet = $(".create-order-step .create-order-bullet");
+            const $pages = $(".create-order-page");
+            const stepsNumber = $pages.length;
+
+            if (current < stepsNumber) {
+                $slidePage.css("margin-left", `-${(100 / stepsNumber) * current}%`);
+                $bullet.eq(current - 1).addClass("active");
+                $progressCheck.eq(current - 1).addClass("active");
+                $progressText.eq(current - 1).addClass("active");
+                current += 1;
+            }
+        }
+
+        function GoToPreviousPage() {
+            const $slidePage = $(".create-order-slide-page");
+            const $progressText = $(".create-order-step p");
+            const $progressCheck = $(".create-order-step .create-order-check");
+            const $bullet = $(".create-order-step .create-order-bullet");
+            const $pages = $(".create-order-page");
+            const stepsNumber = $pages.length;
+
+            if (current > 1) {
+                $slidePage.css("margin-left", `-${(100 / stepsNumber) * (current - 2)}%`);
+                $bullet.eq(current - 2).removeClass("active");
+                $progressCheck.eq(current - 2).removeClass("active");
+                $progressText.eq(current - 2).removeClass("active");
+                current -= 1;
+            }
+        }
+
+        function LoadMovies(cinemaId) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("LoadMovies", "Order")?cinemaId=' + cinemaId,
+                success: function (response) {
+                    GoToNextPage();
+                    $("#movies-container").show();
+                    $("#movies-container").html(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function LoadAvailableDates(movieId) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("LoadAvailableDates", "Order")?movieId=' + movieId,
+                success: function (response) {
+                    GoToNextPage();
+                    $("#available-dates-container").show();
+                    $("#available-dates-container").html(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function LoadAvailableSeats(availableDateId) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("LoadAvailableSeats", "Order")?availableDateId=' + availableDateId,
+                success: function (response) {
+                    GoToNextPage();
+                    $("#available-seats-container").show();
+                    $("#available-seats-container").html(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        var selectedSeats = [];
+        function LoadOrderForm() {
+            if (selectedSeats.length === 0) {
+                $("#error-modal").modal("show");
+                $("#error-modal-title").html("Error");
+                $("#error-modal-body").html("No seats selected.");
+                return;
+            }
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("LoadOrderForm", "Order")?selectedSeats=' + selectedSeats,
+                success: function (response) {
+                    GoToNextPage();
+                    $("#order-form-container").show();
+                    $("#order-form-container").html(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function CreateOrder() {
+            var firstName = $('#Order_FirstName').val();
+            var lastName = $('#Order_LastName').val();
+            var email = $('#Order_Email').val();
+
+            if (firstName === "" || lastName === "" || email === "") {
+                $("#error-modal").modal("show");
+                $("#error-modal-title").html("Error");
+                $("#error-modal-body").html("All fields are required.");
+                return false;
+            }
+
+            var data = $("#order-form").serialize();
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Create", "Order")',
+                data: data,
+                success: function (response) {
+                    if (response.status == "OK") {
+                        window.location.href = response.redirectUrl;
+                    }
+                    else {
+                        console.log(response);
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+    </script>
+}

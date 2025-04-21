@@ -1,0 +1,114 @@
+﻿<div class="container-fluid">
+    <partial name="_Navbar">
+
+    <div class="d-flex align-items-center justify-content-center">
+        <button type="button" class="btn btn-success m-2" onclick="CreateOrUpdateHallGet(0)">Create Hall</button>
+        <button type="button" class="btn btn-danger m-2" onclick="DeleteSingleOrAllHalls(0)">Delete All Halls</button>
+    </div>
+
+    <table id="halls-table" class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <partial name="_GeneralModal">
+    <partial name="_ConfirmModal">
+</div>
+
+@section Scripts 
+{
+    <script type="text/javascript">
+        var dt;
+
+        $(document).ready(function () {
+            dt = $("#halls-table").DataTable({
+                ajax: {
+                    url: '@Url.Action("HallsDatatable", "Admin")',
+                    type: 'POST'
+                },
+                processing: true,
+                serverSide: true,
+                ordering: false
+            });
+
+            $("#halls-table_filter input").change(function () {
+                dt.search($(this).val()).draw();
+            });
+        });
+
+        function CreateOrUpdateHallGet(hallId) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("CreateOrUpdateHall", "Admin")?hallId=' + hallId,
+                success: function (response) {
+                    $("#general-modal").modal("show");
+                    $("#general-modal-title").html("Create Hall");
+                    $("#general-modal-body").html(response);
+                    dt.draw();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function CreateOrUpdateHallPost() {
+            var data = $("#hall-form").serialize();
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("CreateOrUpdateHall", "Admin")',
+                data: data,
+                success: function (response) {
+                    if (response == "OK") {
+                        $("#general-modal").modal("hide");
+                        $("#general-modal-title").html("");
+                        $("#general-modal-body").html("");
+                        dt.draw();
+                    }
+                    else {
+                        console.log(response);
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function DeleteSingleOrAllHalls(hallId) {
+            $("#confirm-modal").modal("show");
+            $("#confirm-modal-title").html("Confirm");
+            $("#confirm-modal-body").html("Are you sure?");
+            $("#confirm-modal-btn-delete").off("click");
+            $("#confirm-modal-btn-delete").on("click", function () {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("DeleteSingleOrAllHalls", "Admin")?hallId=' + hallId,
+                    success: function (response) {
+                        if (response == "OK") {
+                            $("#confirm-modal").modal("hide");
+                            $("#confirm-modal-title").html("");
+                            $("#confirm-modal-body").html("");
+                            dt.draw();
+                        }
+                        else {
+                            console.log(response);
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            });
+        }
+    </script>
+}
