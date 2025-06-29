@@ -12,8 +12,8 @@ namespace eVillageCinemas.Services.ImplementCode
 {
     public class HelperService : IHelperService
     {        
-        private readonly string _accessKey = "AKIATTDYIGSFWNFZZDED";
-        private readonly string _secretKey = "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";
+        private readonly string _accessKey = "Put access key here";
+        private readonly string _secretKey = "Put secret key here";
         private readonly string _bucketName = "evillagecinemasbucket2";
         private readonly RegionEndpoint _bucketRegion = RegionEndpoint.EUCentral1;        
 
